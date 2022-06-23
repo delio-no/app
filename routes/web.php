@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
+//Авторизация
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Домашняя страница
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+//Выход из аккаунта
+Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
+
+//Страница со списком всех пользоватлей
+Route::get('/userlist', [\App\Http\Controllers\UserListController::class, 'showUsers'])->name('userlist');
+
+
+//Профиль пользователя
+Route::get('/profile/{name}', [\App\Http\Controllers\ProfileController::class, 'getProfile'])->name('profile');
