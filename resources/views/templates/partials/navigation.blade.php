@@ -22,7 +22,7 @@
             <ul class="navbar-nav ml-auto">
                 @if (Auth::check())
                     <li class="nav-item">
-                        <a class="nav-link" href="#">{{ Auth::user()->name }}</a>
+                        <a class="nav-link" href="{{ route('profile.index', ['id' => Auth::user()->id]) }}">{{ Auth::user()->name }}</a>
                     </li>
 
                     <li class="nav-item">

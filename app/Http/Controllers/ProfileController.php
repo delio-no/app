@@ -7,8 +7,14 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
-    public function getProfile($name){
+    public function getProfile($id)
+    {
+        $user = User::where('id', $id)->first();
 
-       dd($name);
+        if (!$user) {
+            abort(404);
+        }
+
+        return view('profile.index', compact('user'));
     }
 }

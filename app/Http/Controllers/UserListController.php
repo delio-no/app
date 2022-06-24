@@ -10,6 +10,6 @@ class UserListController extends Controller
     public function showUsers(){
         $users = User::all();
 
-        return view('user.list', ['users' => $users]);
+        return view('user.list')->with('users', $users);
     }
 }

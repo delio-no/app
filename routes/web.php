@@ -32,4 +32,8 @@ Route::get('/userlist', [\App\Http\Controllers\UserListController::class, 'showU
 
 
 //Профиль пользователя
-Route::get('/profile/{name}', [\App\Http\Controllers\ProfileController::class, 'getProfile'])->name('profile');
+Route::get('/profile/{id}', [\App\Http\Controllers\ProfileController::class, 'getProfile'])->name('profile.index');
+
+
+//Стена пользователя
+Route::post('/status', [\App\Http\Controllers\StatusController::class, 'postStatus'])->middleware('auth')->name('status.post');

@@ -42,4 +42,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    #Пользователю принадлжедит меседж
+    public function statuses(){
+        return $this->hasMany('App\Models\Status', 'user_id');
+    }
 }
+
