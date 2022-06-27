@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Status;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,12 @@ class ProfileController extends Controller
             abort(404);
         }
 
-        return view('profile.index', compact('user'));
+        $statuses = $user->statuses()->notReply()->get();
+
+        return view('profile.index', [
+            'user' => $user,
+            'statuses' => $statuses,
+
+        ]);
     }
 }

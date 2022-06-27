@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Status;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Auth;
@@ -25,10 +26,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (Auth::check()){
+        if (Auth::check()) {
 
+            $statuses = Status::notReply()->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
 
-           return view('timeline.index');
+            return view('timeline.index', compact('statuses'));
         }
 
         return view('home');
