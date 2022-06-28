@@ -7,17 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
-    protected $fillable =['body'];
+    protected $fillable = ['body'];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo('App\Models\User', 'user_id');
     }
 
-    public function scopeNotReply($query){
+    public function scopeNotReply($query)
+    {
         return $query->whereNull('parent_id');
     }
 
-    public function replies(){
+    public function replies()
+    {
         return $this->hasMany('App\Models\Status', 'parent_id');
     }
 }

@@ -37,4 +37,5 @@ Route::get('/profile/{id}', [\App\Http\Controllers\ProfileController::class, 'ge
 
 //Стена пользователя
 Route::post('/status', [\App\Http\Controllers\StatusController::class, 'postStatus'])->middleware('auth')->name('status.post');
-Route::post('/status/{statusId}/replay', [\App\Http\Controllers\StatusController::class, 'postReply'])->middleware('auth')->name('status.reply');
+Route::post('/status/{statusId}/reply', [\App\Http\Controllers\StatusController::class, 'postReply'])->middleware('auth')->name('status.reply');
+Route::get('/status/{statusId}/delete', [\App\Http\Controllers\StatusController::class, 'deleteStatus'])->middleware('auth')->name('status.delete');

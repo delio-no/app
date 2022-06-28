@@ -37,6 +37,10 @@
                             <ul class="list-inline">
                                 <li class="list-inline-item">{{ $status->created_at->diffForHumans() }}</li>
                             </ul>
+                            <form method="GET" action="{{ route('status.delete', ['statusId' => $status->id]) }}">
+                                @csrf
+                                <input type="submit" class="btn btn-danger btn-xs" value="Удалить">
+                            </form>
 
                             @foreach($status->replies as $replies)
                                 <div class="media mt-2">
@@ -50,6 +54,11 @@
                                             <li class="list-inline-item">{{ $replies->created_at->diffForHumans() }}</li>
                                         </ul>
 
+                                        <form method="GET" action="{{ route('status.delete', ['statusId' => $replies->id]) }}">
+                                            @csrf
+                                            <input type="submit" class="btn btn-danger btn-xs" value="Удалить">
+                                        </form>
+
                                     </div>
                                 </div>
                             @endforeach
@@ -59,13 +68,15 @@
                                 @csrf
                                 <div class="form-group">
                             <textarea name="reply-{{ $status->id }}" id="" cols="30" rows="2"
-                                      class="form-control{{ $errors->has("reply-{$status->id}") ? ' is-invalid' : '' }}"
+                                      class="form-control{{ $errors->has("reply-{$status->id}") ? ' is-invalid' : '' }} mt-2"
                                       placeholder="Коммент"></textarea>
+
                                     @if($errors->has("reply-{$status->id}"))
                                         <div class="invalid-feedback">
                                             {{ $errors->first("reply-{$status->id}") }}
                                         </div>
                                     @endif
+
                                 </div>
                                 <input type="submit" class="btn btn-primary btn-sm mt-2" value="Ответить">
                             </form>

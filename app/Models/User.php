@@ -48,5 +48,10 @@ class User extends Authenticatable
     public function statuses(){
         return $this->hasMany('App\Models\Status', 'user_id');
     }
+
+    #Пользователю принадлежит книга
+    public function hasBook(){
+        return $this->hasMany('App\Models\Book', 'author_id');
+    }
 }
 

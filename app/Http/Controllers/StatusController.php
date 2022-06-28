@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class StatusController extends Controller
 {
+
     public function postStatus(Request $request)
     {
         $this->validate($request, [
@@ -37,6 +38,20 @@ class StatusController extends Controller
         $reply->user()->associate(Auth::user());
 
         $status->replies()->save($reply);
+
+        return redirect()->back();
+
+
+    }
+
+    public function deleteStatus($statusId)
+    {
+        $status = Status::findOrFail($statusId);
+
+
+        if (!$status) redirect()->route('home');
+
+        $status->delete();
 
         return redirect()->back();
     }

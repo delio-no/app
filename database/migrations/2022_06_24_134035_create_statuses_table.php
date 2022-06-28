@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('parent_id')->nullable();
+            $table->text('header');
             $table->text('body');
             $table->timestamps();
         });
