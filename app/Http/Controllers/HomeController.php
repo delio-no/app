@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Status;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Auth;
@@ -28,9 +28,13 @@ class HomeController extends Controller
     {
         if (Auth::check()) {
 
-            $statuses = Status::notReply()->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+            $user = User::where('id', Auth::user()->id)->first();
 
-            return view('timeline.index', compact('statuses'));
+            $comments = $user->commentProfile()->get();
+
+            $statuses = Comment::notReply()->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+
+            return view('timeline.index', ['statuses' => $statuses, 'comments' => $comments, 'profileId' => Auth::user()->id]);
         }
 
         return view('home');

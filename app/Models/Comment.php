@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Status extends Model
+class Comment extends Model
 {
-    protected $fillable = ['body'];
+    protected $fillable = ['profile_id', 'header', 'body'];
 
     public function user()
     {
@@ -17,10 +17,16 @@ class Status extends Model
     public function scopeNotReply($query)
     {
         return $query->whereNull('parent_id');
+
+
+    }public function scopeNotHeader($query)
+    {
+        return $query->whereNull('header');
     }
 
     public function replies()
     {
-        return $this->hasMany('App\Models\Status', 'parent_id');
+        return $this->hasMany('App\Models\Comment', 'parent_id');
     }
+
 }

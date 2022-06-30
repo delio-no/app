@@ -36,6 +36,10 @@ Route::get('/profile/{id}', [\App\Http\Controllers\ProfileController::class, 'ge
 
 
 //Стена пользователя
-Route::post('/status', [\App\Http\Controllers\StatusController::class, 'postStatus'])->middleware('auth')->name('status.post');
-Route::post('/status/{statusId}/reply', [\App\Http\Controllers\StatusController::class, 'postReply'])->middleware('auth')->name('status.reply');
-Route::get('/status/{statusId}/delete', [\App\Http\Controllers\StatusController::class, 'deleteStatus'])->middleware('auth')->name('status.delete');
+Route::post('/profile/{profileId}/comment/', [\App\Http\Controllers\CommentController::class, 'postComment'])->middleware('auth')->name('comment.post');
+Route::post('/comment/{commentId}/profile/{profileId}/reply', [\App\Http\Controllers\CommentController::class, 'postReply'])->middleware('auth')->name('comment.reply');
+Route::get('/comment/{commentId}/delete', [\App\Http\Controllers\CommentController::class, 'deleteStatus'])->middleware('auth')->name('comment.delete');
+
+
+//Все комментарии пользователя
+Route::get('/userlistcomments', [\App\Http\Controllers\UserListCommentsController::class, 'showComments'])->middleware('auth')->name('userlistcomments');

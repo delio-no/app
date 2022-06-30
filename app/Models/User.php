@@ -45,13 +45,27 @@ class User extends Authenticatable
 
 
     #Пользователю принадлжедит меседж
-    public function statuses(){
-        return $this->hasMany('App\Models\Status', 'user_id');
+    public function statuses()
+    {
+        return $this->hasMany('App\Models\Comment', 'user_id');
+
     }
 
+
+    #Профилю принадлежит комментарий
+    public function commentProfile()
+    {
+        return $this->hasMany('App\Models\Comment', 'profile_id');
+    }
+
+
     #Пользователю принадлежит книга
-    public function hasBook(){
+    public function hasBook()
+    {
         return $this->hasMany('App\Models\Book', 'author_id');
     }
+
+
+
 }
 
