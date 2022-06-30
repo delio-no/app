@@ -12,7 +12,7 @@
                     <p class="card-text">{{ $comment->body }}</p>
 
                     @if(Auth::check() && Auth::user()->id == $comment->user_id)
-                        <form method="GET" action="{{ route('comment.delete', ['commentId' => $comment->id]) }}">
+                        <form method="GET" action="{{ route('thread.delete', ['threadId' => $comment->id]) }}">
                             @csrf
                             <input type="submit" class="btn btn-danger btn-xs" value="Удалить">
                         </form>
@@ -26,7 +26,7 @@
                         <div class="collapse" id="collapseExample{{ $comment->id }}">
                             <div class="card card-body">
                                 <form method="POST"
-                                      action="{{ route('comment.reply', ['commentId' => $comment->id, 'profileId' => Auth::user()->id]) }}"
+                                      action="{{ route('comment.reply', ['commentId' => $comment->id, 'profileId' => Auth::user()->id, 'threadId' => $comment->id]) }}"
                                       class="mb-4">
                                     @csrf
                                     <div class="form-group">
@@ -89,7 +89,7 @@
                         <div class="collapse" id="collapseExample{{ $replies->id }}">
                             <div class="card card-body">
                                 <form method="POST"
-                                      action="{{ route('comment.reply', ['commentId' => $replies->id, 'profileId' => Auth::user()->id]) }}"
+                                      action="{{ route('comment.reply', ['commentId' => $replies->id, 'profileId' => Auth::user()->id, 'threadId' => $comment->id]) }}"
                                       class="mb-4">
                                     @csrf
                                     <div class="form-group">

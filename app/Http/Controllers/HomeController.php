@@ -30,11 +30,10 @@ class HomeController extends Controller
 
             $user = User::where('id', Auth::user()->id)->first();
 
-            $comments = $user->commentProfile()->get();
+            $comments = $user->commentHasProfile()->simplePaginate(5);
 
-            $statuses = Comment::notReply()->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
 
-            return view('timeline.index', ['statuses' => $statuses, 'comments' => $comments, 'profileId' => Auth::user()->id]);
+            return view('timeline.index', [ 'comments' => $comments, 'profileId' => Auth::user()->id]);
         }
 
         return view('home');

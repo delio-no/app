@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    protected $fillable = ['profile_id', 'header', 'body'];
+    protected $fillable = ['profile_id', 'thread_id', 'header', 'body'];
 
     public function user()
     {
         return $this->belongsTo('App\Models\User', 'user_id');
     }
+
 
     public function scopeNotReply($query)
     {
@@ -28,5 +29,6 @@ class Comment extends Model
     {
         return $this->hasMany('App\Models\Comment', 'parent_id');
     }
+
 
 }

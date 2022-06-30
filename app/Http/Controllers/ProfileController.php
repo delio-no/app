@@ -17,14 +17,11 @@ class ProfileController extends Controller
             abort(404);
         }
 
-        /*$statuses = $user->statuses()->notReply()->get();*/
 
-        $comments = $user->commentProfile()->get();
-
+        $comments = $user->commentHasProfile()->get();
 
         return view('profile.index', [
             'user' => $user,
-            /*'statuses' => $statuses,*/
             'profileId' => $id,
             'comments' => $comments
         ]);

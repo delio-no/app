@@ -44,8 +44,8 @@ class User extends Authenticatable
     ];
 
 
-    #Пользователю принадлжедит меседж
-    public function statuses()
+    #Пользователю принадлжедит коммент
+    public function hasComment()
     {
         return $this->hasMany('App\Models\Comment', 'user_id');
 
@@ -53,7 +53,7 @@ class User extends Authenticatable
 
 
     #Профилю принадлежит комментарий
-    public function commentProfile()
+    public function commentHasProfile()
     {
         return $this->hasMany('App\Models\Comment', 'profile_id');
     }

@@ -31,6 +31,13 @@
     </div>
     <hr>
     @include('comments.list')
+
+
+
+{!! $comments->links() !!}
+
+
+
 @endsection
 
 {{--@extends('layouts.app')
