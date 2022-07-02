@@ -10,14 +10,17 @@ class ProfileController extends Controller
 {
     public function getProfile($id)
     {
-        $user = User::where('id', $id)->first();
+
         $allComment = Comment::all();
-        //создаем коллекцию комментариев с привязкой по profile_id, и где header != null
+
+
+        //создаем коллекцию комментариев с привязкой по profile_id
+        $user = User::where('id', $id)->first();
         $comments = $user->commentHasProfile()->take(5)->get();
-        $countComment = $user->commentHasProfile()->count();
 
 
         //Показываем кнопку подгрузки комментариев
+        $countComment = $user->commentHasProfile()->count();
         if ($countComment > 5) {
             $showButton = true;
         } else {
@@ -28,7 +31,6 @@ class ProfileController extends Controller
         if (!$user) {
             abort(404);
         }
-
 
         return view('profile.index', [
             'user' => $user,

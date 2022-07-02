@@ -28,25 +28,21 @@ class HomeController extends Controller
     {
         if (Auth::check()) {
 
-            $user = User::where('id', Auth::user()->id)->first();
             $allComment = Comment::all();
 
+
             //создаем коллекцию комментариев с привязкой по profile_id
+            $user = User::where('id', Auth::user()->id)->first();
             $comments = $user->commentHasProfile()->take(5)->get();
-
-           /*$count = $user->commentHasProfile()->count();
-            dd($count);*/
-
-            $countComment = $user->commentHasProfile()->count();
 
 
             //Показываем кнопку
+            $countComment = $user->commentHasProfile()->count();
             if ($countComment > 5) {
                 $showButton = true;
             } else {
                 $showButton = false;
             }
-
 
             return view('timeline.index', ['comments' => $comments,
                 'profileId' => Auth::user()->id,

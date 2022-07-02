@@ -43,12 +43,9 @@
         </div>
     </div>
 
-    <div hidden>
-        {{ $startcomment = 0 }}
-    </div>
-
     @include('comments.list')
 
+    {{-- div для подгрузки комментов через ajax --}}
     <div id="resources"></div>
 
     @if($showButton)

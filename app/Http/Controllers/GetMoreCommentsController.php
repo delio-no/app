@@ -22,7 +22,7 @@ class GetMoreCommentsController extends Controller
 
             $allComment = Comment::all();
 
-            return view('comments.listmorecomment', ['comments' => $comments, 'allComment' => $allComment, 'user' => $user])->render();
+            return view('comments.list', ['comments' => $comments, 'allComment' => $allComment, 'user' => $user])->render();
 
         }
     }
