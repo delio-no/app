@@ -29,13 +29,24 @@ class HomeController extends Controller
         if (Auth::check()) {
 
             $user = User::where('id', Auth::user()->id)->first();
+            $allComment = Comment::all();
+            $comments = $user->commentHasProfile()->take(5)->get();
+            $countComment = $user->commentHasProfile()->count();
+            $hideButton = false;
+            if($countComment > 5){
+                $showButton = true;
+            }else{
+                $showButton = false;
+            }
 
-            $comments = $user->commentHasProfile()->simplePaginate(5);
 
 
-            return view('timeline.index', [ 'comments' => $comments, 'profileId' => Auth::user()->id]);
+
+            return view('timeline.index', [ 'comments' => $comments, 'profileId' => Auth::user()->id, 'allComment' => $allComment, 'showButton' => $showButton, 'hideButton' => $hideButton ]);
         }
 
         return view('home');
     }
+
+
 }

@@ -57,7 +57,6 @@
             <hr>
 
 
-
             {{--@if(!$statuses->count())
                 <p>{{ $user->name }} еще ничего не опубликовал</p>
             @else
@@ -127,5 +126,58 @@
                 @endif--}}
         </div>
     </div>
-    @include('comments.list')
+
+    <div hidden>
+        {{ $startcomment = 0 }}
+    </div>
+
+    <div id="resources">
+        @include('comments.list')
+    </div>
+
+    <a href="" id="more_btn">More</a>
+
+
+
+
 @endsection
+
+@push('scripts')
+    <script>
+
+        $(function () {
+            var take = 5;
+            $('#more_btn').click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    url: "/get/more/comments/" + take,
+                    type: "GET",
+                    success: function (data) {
+                        $("#resources").html(data);
+                        take += 5;
+                    }
+                });
+            });
+        })
+
+
+        /*$(document).ready(function () {
+            $(document).on('click', '.pagination a', function (event) {
+                event.preventDefault();
+                let page = $(this).attr('href').split('page=')[1]
+                getMoreComments(page);
+            });
+        });
+
+        function getMoreComments(page) {
+            $.ajax({
+                url:"/get/more/comments?page="+page,
+                success:function (res) {
+                    $('#resources_container').html(res);
+                }
+            })
+        }*/
+
+
+    </script>
+@endpush

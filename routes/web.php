@@ -40,6 +40,7 @@ Route::post('/profile/{profileId}/comment/', [\App\Http\Controllers\CommentContr
 Route::post('/comment/{commentId}/profile/{profileId}/thread/{threadId}/reply', [\App\Http\Controllers\CommentController::class, 'postReply'])->middleware('auth')->name('comment.reply');
 Route::get('/comment/{commentId}/delete', [\App\Http\Controllers\CommentController::class, 'deleteStatus'])->middleware('auth')->name('comment.delete');
 Route::get('/thread/{threadId}/delete', [\App\Http\Controllers\CommentController::class, 'deleteThread'])->middleware('auth')->name('thread.delete');
+Route::get('/get/more/comments/{take}', [App\Http\Controllers\GetMoreCommentsController::class, 'getComments'])->name('get.more.comments');
 
 
 //Все комментарии пользователя

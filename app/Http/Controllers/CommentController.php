@@ -24,8 +24,11 @@ class CommentController extends Controller
         if (Comment::whereRaw('id = (select max(`id`) from comments)')->count() > 0) {
 
 
-            $maxIdComment = Comment::whereRaw('id = (select max(`id`) from comments)')->first();
-            $thread_id = $maxIdComment->id + 1;
+            /*$maxIdComment = Comment::whereRaw('id = (select max(`id`) from comments)')->first();
+            $thread_id = $maxIdComment->id + 1;*/
+            $lastCreate = Comment::orderBy('created_at', 'desc')->first();
+            $thread_id = $lastCreate->id;
+
 
             Auth::user()->hasComment()->create([
                 'body' => $request->input('status'),
@@ -33,6 +36,8 @@ class CommentController extends Controller
                 'profile_id' => $profileId,
                 'thread_id' => $thread_id
             ]);
+
+
         } else {
             Auth::user()->hasComment()->create([
                 'body' => $request->input('status'),
@@ -62,6 +67,7 @@ class CommentController extends Controller
             ]);
 
             $comment = Comment::find($commentId);
+            $threadId = Comment::find($commentId)->thread_id;
 
             if (!$comment) redirect()->route('home');
 
@@ -102,6 +108,8 @@ class CommentController extends Controller
         if (!$thread) redirect()->route('home');
 
         $thread->delete();
+
+
 
         return redirect()->back();
     }
