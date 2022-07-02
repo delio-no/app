@@ -30,19 +30,29 @@ class HomeController extends Controller
 
             $user = User::where('id', Auth::user()->id)->first();
             $allComment = Comment::all();
+
+            //создаем коллекцию комментариев с привязкой по profile_id
             $comments = $user->commentHasProfile()->take(5)->get();
+
+           /*$count = $user->commentHasProfile()->count();
+            dd($count);*/
+
             $countComment = $user->commentHasProfile()->count();
-            $hideButton = false;
-            if($countComment > 5){
+
+
+            //Показываем кнопку
+            if ($countComment > 5) {
                 $showButton = true;
-            }else{
+            } else {
                 $showButton = false;
             }
 
 
-
-
-            return view('timeline.index', [ 'comments' => $comments, 'profileId' => Auth::user()->id, 'allComment' => $allComment, 'showButton' => $showButton, 'hideButton' => $hideButton ]);
+            return view('timeline.index', ['comments' => $comments,
+                'profileId' => Auth::user()->id,
+                'allComment' => $allComment,
+                'showButton' => $showButton,
+                'user' => $user]);
         }
 
         return view('home');

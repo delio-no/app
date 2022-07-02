@@ -24,11 +24,23 @@ class Comment extends Model
     {
         return $query->whereNull('header');
     }
+    public function scopeNotNullHeader($query)
+    {
+        return $query->whereNotNull('header');
+    }
+
+
 
     public function replies()
     {
         return $this->hasMany('App\Models\Comment', 'parent_id');
     }
+    public function reverseReplies()
+    {
+        return $this->belongsTo('App\Models\Comment', 'parent_id');
+    }
+
+
 
 
 

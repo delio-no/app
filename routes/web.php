@@ -37,9 +37,9 @@ Route::get('/profile/{id}', [\App\Http\Controllers\ProfileController::class, 'ge
 
 //Стена пользователя
 Route::post('/profile/{profileId}/comment/', [\App\Http\Controllers\CommentController::class, 'postComment'])->middleware('auth')->name('comment.post');
-Route::post('/comment/{commentId}/profile/{profileId}/thread/{threadId}/reply', [\App\Http\Controllers\CommentController::class, 'postReply'])->middleware('auth')->name('comment.reply');
+Route::post('/comment/{commentId}/profile/{profileId}/reply', [\App\Http\Controllers\CommentController::class, 'postReply'])->middleware('auth')->name('comment.reply');
 Route::get('/comment/{commentId}/delete', [\App\Http\Controllers\CommentController::class, 'deleteStatus'])->middleware('auth')->name('comment.delete');
-Route::get('/thread/{threadId}/delete', [\App\Http\Controllers\CommentController::class, 'deleteThread'])->middleware('auth')->name('thread.delete');
+Route::get('/thread/{commentId}/delete', [\App\Http\Controllers\CommentController::class, 'deleteThread'])->middleware('auth')->name('thread.delete');
 Route::get('/get/more/comments/{take}', [App\Http\Controllers\GetMoreCommentsController::class, 'getComments'])->name('get.more.comments');
 
 

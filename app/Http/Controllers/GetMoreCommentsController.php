@@ -13,18 +13,16 @@ class GetMoreCommentsController extends Controller
     {
         if ($request->ajax()) {
             $user = User::where('id', Auth::user()->id)->first();
-            $collectionents = $user->commentHasProfile();
-            $count = $collectionents->count();
+
+            //создаем коллекцию комментариев с привязкой по profile_id, и где header != null
+
+            $count = $user->commentHasProfile()->count();
             $skip = 5;
-            $comments =$collectionents->skip($skip)->take($take)->get();
+            $comments = $user->commentHasProfile()->skip($skip)->take($take)->get();
+
             $allComment = Comment::all();
-            $hideButton = false;
-            if($take >= $count){
-                $hideButton = true;
 
-            }
-
-            return view('comments.listmorecomment', [ 'comments' => $comments, 'allComment' => $allComment, 'hideButton' => $hideButton])->render();
+            return view('comments.listmorecomment', ['comments' => $comments, 'allComment' => $allComment, 'user' => $user])->render();
 
         }
     }

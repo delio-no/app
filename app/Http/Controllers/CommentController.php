@@ -20,14 +20,12 @@ class CommentController extends Controller
         ]);
 
 
-        //Если есть запись в таблице comment то делаем встаку
+        //Если есть запись в таблице comment то применяем один метод вставки, иначе используем второй метод
         if (Comment::whereRaw('id = (select max(`id`) from comments)')->count() > 0) {
 
-
-            /*$maxIdComment = Comment::whereRaw('id = (select max(`id`) from comments)')->first();
-            $thread_id = $maxIdComment->id + 1;*/
+            //генерируем thread_id
             $lastCreate = Comment::orderBy('created_at', 'desc')->first();
-            $thread_id = $lastCreate->id;
+            $thread_id = $lastCreate->id + 1;
 
 
             Auth::user()->hasComment()->create([
@@ -45,19 +43,19 @@ class CommentController extends Controller
                 'profile_id' => $profileId
             ]);
 
+            //ищем thread_id  обновляем его
             $afterInsert = Comment::whereRaw('id = (select max(`id`) from comments)')->first();
             $thread_id = $afterInsert->id;
             $afterInsert->thread_id = $thread_id;
             $afterInsert->update();
         }
 
-
         return redirect()->back()->with('info', 'Запись успешно добавлена');
     }
 
 
     //Вставка ответного комментария
-    public function postReply(Request $request, $commentId, $profileId, $threadId)
+    public function postReply(Request $request, $commentId, $profileId)
     {
 
         //Если комментарий с таким id существует, то делаем встаку, иначе выводим алёрт
@@ -65,6 +63,8 @@ class CommentController extends Controller
             $this->validate($request, [
                 "reply-{$commentId}" => 'required|max:1000'
             ]);
+
+
 
             $comment = Comment::find($commentId);
             $threadId = Comment::find($commentId)->thread_id;
@@ -90,25 +90,28 @@ class CommentController extends Controller
     //Удаление отдельного комментария
     public function deleteStatus($commentId)
     {
-        $status = Comment::findOrFail($commentId);
+        $comment = Comment::findOrFail($commentId);
 
-        if (!$status) redirect()->route('home');
+        if (!$comment) redirect()->route('home');
 
-        $status->delete();
+        $comment->delete();
 
         return redirect()->back();
     }
 
 
-    //Удаление цпочки комментарии по thread_id
-    public function deleteThread($threadId)
+    //Удаление цепочки комментарий по thread_id
+    public function deleteThread($commentId)
     {
-        $thread = Comment::where('thread_id', $threadId);
+        $comment = Comment::findOrFail($commentId);
 
-        if (!$thread) redirect()->route('home');
+        if (!$comment) redirect()->route('home');
+
+        $thread = Comment::where('thread_id', $comment->thread_id) ;
+
+        /*dd($thread);*/
 
         $thread->delete();
-
 
 
         return redirect()->back();

@@ -9,9 +9,8 @@
     <div class="row">
         <div class="col-lg-6">
             @foreach($users as $user)
-            @include('user.userblock')
+                @include('user.userblock')
             @endforeach
         </div>
     </div>
-
 @endsection

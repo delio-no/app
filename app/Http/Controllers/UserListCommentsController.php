@@ -9,7 +9,8 @@ use Auth;
 
 class UserListCommentsController extends Controller
 {
-    public function showComments(){
+    public function showComments()
+    {
 
         $comments = Comment::where('user_id', Auth::user()->id)->get();
 
