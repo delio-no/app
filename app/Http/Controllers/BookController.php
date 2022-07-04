@@ -16,33 +16,45 @@ class BookController extends Controller
         $book = Book::find($bookId);
         $findRole = Role::where('author_id', $book->author_id)->where('user_id', Auth::user()->id)->first();
 
+        if (Auth::user()->id == $profileId || $findRole) {
+            $book = Book::find($bookId);
+            return view('books.book', compact('book'));
+        }
 
-        //валидация
-        if (!(Auth::user()->id == $profileId || $findRole)) redirect(route('home'));
-
-        $book = Book::find($bookId);
-
-        return view('books.book', compact('book'));
+        return redirect(route('home'));
     }
 
     public function getListBookAuthor($profileId)
     {
-        $user = Role::where('author_id', $profileId)->where('user_id', Auth::user()->id)->first();
+        $findRole = Role::where('author_id', $profileId)->where('user_id', Auth::user()->id)->first();
 
+        if (Auth::user()->id == $profileId || $findRole) {
+            $user = User::findOrFail($profileId);
 
-        //валидация
-        if (!(Auth::user()->id == $profileId || $user)) redirect(route('home'));
+            $books = $user->hasBook()->get();
 
-        $user = User::findOrFail($profileId);
-        $books = $user->hasBook()->get();
+            return view('books.list', ['profileId' => $profileId, 'books' => $books, 'user' => $user]);
+        }
 
-        return view('books.list', ['profileId' => $profileId, 'books' => $books, 'user' => $user]);
+        return redirect(route('home'));
     }
 
     public function getAddBook()
     {
         return view('books.addbook');
     }
+
+    public function getEditBook($bookId)
+    {
+        $book = Book::findOrFail($bookId);
+
+        if (Auth::user()->id == $book->author_id) {
+            return view('books.editbook', compact('book'));
+        }
+
+        return redirect(route('home'));
+    }
+
 
     public function addBook(Request $request)
     {
@@ -59,15 +71,20 @@ class BookController extends Controller
         return redirect(route('home'))->with('info', 'Книга успешно добавлена');
     }
 
-    public function getEditBook($bookId)
+    public function deleteBook($bookId)
     {
+
         $book = Book::findOrFail($bookId);
 
+        if (!$book) return redirect()->back()->with('info', 'Книга не найдена');
 
-        //валидация
-        if (!(Auth::user()->id == $book->author_id)) redirect(route('home'));
+        if (Auth::user()->id == $book->author_id) {
+            $book->delete();
 
-        return view('books.editbook', compact('book'));
+            return redirect()->back()->with('info', 'Книга успешно удалена');
+        }
+
+        return redirect(route('home'));
     }
 
     public function editBook(Request $request, $bookId)
@@ -90,39 +107,21 @@ class BookController extends Controller
         return redirect(route('home'))->with('info', 'Книга успешно изменена');
     }
 
-    public function deleteBook($bookId)
-    {
-
-        $book = Book::findOrFail($bookId);
-
-        if (!$book) return redirect()->back()->with('info', 'Книга не найдена');
-
-
-        //валидация
-        if (!(Auth::user()->id == $book->author_id)) redirect(route('home'));
-
-        $book->delete();
-
-        return redirect()->back()->with('info', 'Книга успешно удалена');
-
-    }
-
     public function sharedBook(Request $request, $bookId)
     {
-        $book = Book::find($bookId);
-        return view('books.book', compact('book'));
+            $book = Book::find($bookId);
+            return view('books.book', compact('book'));
     }
 
     public function genereateBookLink($bookId)
     {
         $book = Book::findOrFail($bookId);
 
+        if (Auth::user()->id == $book->author_id) {
+            $url = URL::temporarySignedRoute('book.share', now()->addSeconds(30), ['bookId' => $bookId]);
+            return view('books.generatelink', compact('url'));
+        }
 
-        //валидация
-        if (!(Auth::user()->id == $book->author_id)) redirect(route('home'));
-
-        $url = URL::temporarySignedRoute('book.share', now()->addSeconds(30), ['bookId' => $bookId]);
-
-        return view('books.generatelink', compact('url'));
+        return redirect(route('home'));
     }
 }
