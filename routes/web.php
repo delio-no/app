@@ -86,6 +86,7 @@ Route::get('/profile/{userId}/author/{authorId}/role/add', [\App\Http\Controller
 //Забрать доступ
 Route::get('/profile/{userId}/role/delete', [\App\Http\Controllers\RoleController::class, 'deleteRole'])->middleware('auth')->name('role.delete');
 
+
 /*Доступ по ссылке*/
 //Принимаем расшареную ссылку
 Route::get('/shared/book/{bookId}', [\App\Http\Controllers\BookController::class, 'sharedBook'])->middleware('signed')->name('book.share');
