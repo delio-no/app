@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->integer('profile_id');
             $table->integer('parent_id')->nullable();
-            $table->bigInteger('thread_id');
+            $table->bigInteger('thread_id')->nullable();
             $table->text('header')->nullable();
             $table->text('body');
             $table->timestamps();
