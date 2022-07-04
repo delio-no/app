@@ -44,7 +44,7 @@ class User extends Authenticatable
     ];
 
 
-    #Пользователю принадлжедит коммент
+    //Пользователю принадлжедит коммент
     public function hasComment()
     {
         return $this->hasMany('App\Models\Comment', 'user_id');
@@ -52,17 +52,24 @@ class User extends Authenticatable
     }
 
 
-    #Профилю принадлежит комментарий
+    //Профилю принадлежит комментарий
     public function commentHasProfile()
     {
         return $this->hasMany('App\Models\Comment', 'profile_id');
     }
 
 
-    #Пользователю принадлежит книга
+    //Пользователю принадлежит книга
     public function hasBook()
     {
         return $this->hasMany('App\Models\Book', 'author_id');
+    }
+
+
+
+    public function hasRole()
+    {
+        return $this->hasMany('App\Models\Role', 'author_id');
     }
 
 

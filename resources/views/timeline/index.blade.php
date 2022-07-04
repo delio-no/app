@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="row">
-        <div class="col-lg-6">
+            <div class="col-lg-12">
             <form method="POST" action="{{ route('comment.post', ['profileId' => Auth::user()->id]) }}">
                 @csrf
                 <div class="mb-3">
@@ -39,13 +39,14 @@
     @if($showButton)
         <div>
             @csrf
-            <input id="more_btn" type="submit" class="btn btn-success btn-sm mt-2 mb-2 col-12 "
+            <input id="more_btn" type="submit" class="btn btn-success btn-sm mt-2 mb-2 col-12"
                    value="Загрузить комменатрии">
         </div>
     @endif
 
 @endsection
 
+{{-- подгрузка комментов через ajax --}}
 @push('scripts')
 
     <script>

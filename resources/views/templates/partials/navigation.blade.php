@@ -12,11 +12,13 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 @if (Auth::check())
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ route('userlistcomments') }}">Мои комментарии</a>
+                    <a class="nav-link active" aria-current="page" href="{{ route('user.list.comments') }}">Мои комментарии</a>
+                </li><li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ route('book.list', ['profileId' => Auth::user()->id]) }}">Мои книги</a>
                 </li>
                 @endif
                 <li class="nav-item">
-                    <a class="nav-link active" href="{{ route('userlist') }}">Пользователи</a>
+                    <a class="nav-link active" href="{{ route('user.list') }}">Пользователи</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-
+use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Models\User;
 use Auth;
-use Illuminate\Http\Request;
+
 
 class CommentController extends Controller
 {
@@ -65,7 +65,6 @@ class CommentController extends Controller
             ]);
 
 
-
             $comment = Comment::find($commentId);
             $threadId = Comment::find($commentId)->thread_id;
 
@@ -92,7 +91,7 @@ class CommentController extends Controller
     {
         $comment = Comment::findOrFail($commentId);
 
-        if (!$comment) redirect()->route('home');
+        if (!$comment) redirect()->back()->with('info', 'Комментария не существует');
 
         $comment->delete();
 
@@ -105,16 +104,31 @@ class CommentController extends Controller
     {
         $comment = Comment::findOrFail($commentId);
 
-        if (!$comment) redirect()->route('home');
+        if (!$comment) redirect()->back()->with('info', 'Комментария не существует');
 
-        $thread = Comment::where('thread_id', $comment->thread_id) ;
-
-        /*dd($thread);*/
+        $thread = Comment::where('thread_id', $comment->thread_id);
 
         $thread->delete();
 
-
         return redirect()->back();
+    }
+
+    public function loadMoreComments(Request $request, $take)
+    {
+        if ($request->ajax()) {
+            $user = User::where('id', Auth::user()->id)->first();
+
+            //создаем коллекцию комментариев с привязкой по profile_id, и где header != null
+
+            $count = $user->commentHasProfile()->count();
+            $skip = 5;
+            $comments = $user->commentHasProfile()->skip($skip)->take($take)->get();
+
+            $allComment = Comment::all();
+
+            return view('comments.list', ['comments' => $comments, 'allComment' => $allComment, 'user' => $user])->render();
+
+        }
     }
 
 }

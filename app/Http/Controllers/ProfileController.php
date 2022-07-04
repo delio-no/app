@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\Role;
+
 
 class ProfileController extends Controller
 {
@@ -12,7 +14,7 @@ class ProfileController extends Controller
     {
 
         $allComment = Comment::all();
-
+        $roles = Role::all();
 
         //создаем коллекцию комментариев с привязкой по profile_id
         $user = User::where('id', $id)->first();
@@ -37,7 +39,24 @@ class ProfileController extends Controller
             'profileId' => $id,
             'comments' => $comments,
             'allComment' => $allComment,
-            'showButton' => $showButton
+            'showButton' => $showButton,
+            'roles' => $roles
         ]);
+    }
+
+    public function getComments()
+    {
+
+        $comments = Comment::where('user_id', Auth::user()->id)->get();
+
+        return view('comments.userlist')->with('comments', $comments);
+    }
+
+    public function getUsers()
+    {
+        $users = User::all();
+        $roles = Role::all();
+
+        return view('user.list', ['users' => $users, 'roles' => $roles]);
     }
 }
