@@ -10,7 +10,7 @@ use App\Models\Role;
 
 class ProfileController extends Controller
 {
-    public function getProfile($id)
+    public function getProfile(Request $request, $id)
     {
 
         $allComment = Comment::all();

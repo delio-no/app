@@ -3,23 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Book;
 use App\Models\Role;
-use Illuminate\Support\Facades\URL;
 
 class BookController extends Controller
 {
-    public function getBook($profileId, $bookId)
+    public function getBook($bookId)
     {
-        $book = Book::find($bookId);
-        $findRole = Role::where('author_id', $book->author_id)->where('user_id', Auth::user()->id)->first();
-
-
-        //валидация
-        if (!(Auth::user()->id == $profileId || $findRole)) redirect(route('home'));
-
         $book = Book::find($bookId);
 
         return view('books.book', compact('book'));
@@ -27,12 +20,6 @@ class BookController extends Controller
 
     public function getListBookAuthor($profileId)
     {
-        $user = Role::where('author_id', $profileId)->where('user_id', Auth::user()->id)->first();
-
-
-        //валидация
-        if (!(Auth::user()->id == $profileId || $user)) redirect(route('home'));
-
         $user = User::findOrFail($profileId);
         $books = $user->hasBook()->get();
 
@@ -62,10 +49,6 @@ class BookController extends Controller
     public function getEditBook($bookId)
     {
         $book = Book::findOrFail($bookId);
-
-
-        //валидация
-        if (!(Auth::user()->id == $book->author_id)) redirect(route('home'));
 
         return view('books.editbook', compact('book'));
     }
@@ -97,10 +80,6 @@ class BookController extends Controller
 
         if (!$book) return redirect()->back()->with('info', 'Книга не найдена');
 
-
-        //валидация
-        if (!(Auth::user()->id == $book->author_id)) redirect(route('home'));
-
         $book->delete();
 
         return redirect()->back()->with('info', 'Книга успешно удалена');
@@ -116,11 +95,6 @@ class BookController extends Controller
     public function genereateBookLink($bookId)
     {
         $book = Book::findOrFail($bookId);
-
-
-        //валидация
-        if (!(Auth::user()->id == $book->author_id)) redirect(route('home'));
-
         $url = URL::temporarySignedRoute('book.share', now()->addSeconds(30), ['bookId' => $bookId]);
 
         return view('books.generatelink', compact('url'));

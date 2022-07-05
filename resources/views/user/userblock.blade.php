@@ -13,7 +13,7 @@
                         <input type="submit" class="btn btn-success btn-xs" value="Дать доступ к библиотеке">
                     </form>
                 @else
-                    <form method="GET" action="{{ route('role.delete', ['userId' => $user->id]) }}">
+                    <form method="GET" action="{{ route('role.delete', ['userId' => $user->id, 'authorId' => Auth::user()->id]) }}">
                         @csrf
                         <input type="submit" class="btn btn-danger btn-xs" value="Забрать доступ к библиотеке">
                     </form>

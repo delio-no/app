@@ -58,33 +58,33 @@ Route::get('/get/more/comments/{take}', [App\Http\Controllers\CommentController:
 
 /*Библиотека*/
 //читать книгу
-Route::get('/profile/{profileId}/list/book/{bookId}', [\App\Http\Controllers\BookController::class, 'getBook'])->middleware('auth')->name('book.show');
+Route::get('/profile/{profileId}/list/book/{bookId}', [\App\Http\Controllers\BookController::class, 'getBook'])->middleware(['auth', 'reader'])->name('book.show');
 
 //список книг автора
-Route::get('/profile/{profileId}/list/book', [\App\Http\Controllers\BookController::class, 'getListBookAuthor'])->middleware('auth')->name('book.list');
+Route::get('/profile/{profileId}/list/book', [\App\Http\Controllers\BookController::class, 'getListBookAuthor'])->middleware(['auth', 'reader'])->name('book.list');
 
 //страница добавления книги
 Route::get('/book', [\App\Http\Controllers\BookController::class, 'getAddBook'])->middleware('auth')->name('show.book.add');
 
 //страница изменения книги
-Route::get('/book/{bookId}/edit', [\App\Http\Controllers\BookController::class, 'getEditBook'])->middleware('auth')->name('show.book.edit');
+Route::get('/book/{bookId}/edit', [\App\Http\Controllers\BookController::class, 'getEditBook'])->middleware(['auth', 'author.book'])->name('show.book.edit');
 
 //Добавить книгу в библиотеку
 Route::post('/book/add', [\App\Http\Controllers\BookController::class, 'addBook'])->middleware('auth')->name('book.add');
 
 //Изменить книгу
-Route::post('/book/{bookId}/edit', [\App\Http\Controllers\BookController::class, 'editBook'])->middleware('auth')->name('book.edit');
+Route::post('/book/{bookId}/edit', [\App\Http\Controllers\BookController::class, 'editBook'])->middleware(['auth', 'author.book'])->name('book.edit');
 
 //Удалить книгу из библиотеки
-Route::get('/book/{bookId}/delete', [\App\Http\Controllers\BookController::class, 'deleteBook'])->middleware('auth')->name('book.delete');
+Route::get('/book/{bookId}/delete', [\App\Http\Controllers\BookController::class, 'deleteBook'])->middleware(['auth', 'author.book'])->name('book.delete');
 
 
 /*Доступ к библиотеке пользователя*/
 //Дать доступ
-Route::get('/profile/{userId}/author/{authorId}/role/add', [\App\Http\Controllers\RoleController::class, 'addRole'])->middleware('auth')->name('role.add');
+Route::get('/profile/{userId}/author/{authorId}/role/add', [\App\Http\Controllers\RoleController::class, 'addRole'])->middleware(['auth', 'access.book'])->name('role.add');
 
 //Забрать доступ
-Route::get('/profile/{userId}/role/delete', [\App\Http\Controllers\RoleController::class, 'deleteRole'])->middleware('auth')->name('role.delete');
+Route::get('/profile/{userId}/author/{authorId}/role/delete', [\App\Http\Controllers\RoleController::class, 'deleteRole'])->middleware(['auth', 'access.book'])->name('role.delete');
 
 
 /*Доступ по ссылке*/
@@ -92,5 +92,5 @@ Route::get('/profile/{userId}/role/delete', [\App\Http\Controllers\RoleControlle
 Route::get('/shared/book/{bookId}', [\App\Http\Controllers\BookController::class, 'sharedBook'])->middleware('signed')->name('book.share');
 
 //генерируем ссылку
-Route::get('/shared/book/{bookId}/link', [\App\Http\Controllers\BookController::class, 'genereateBookLink'])->middleware('auth')->name('generate.book.link');
+Route::get('/shared/book/{bookId}/link', [\App\Http\Controllers\BookController::class, 'genereateBookLink'])->middleware(['auth', 'author.book'])->name('generate.book.link');
 
