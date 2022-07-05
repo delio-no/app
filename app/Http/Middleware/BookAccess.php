@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Closure;
 
-class AccessBook
+class BookAccess
 {
     /**
      * Handle an incoming request.

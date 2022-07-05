@@ -59,7 +59,7 @@ class CommentController extends Controller
         $comment = Comment::find($commentId);
 
         //Если комментарий с таким id не существует, то выводим алёрт
-        if (!$comment) redirect()->back()->with('info', 'Комментарий удален');
+        if (!$comment) return redirect()->back()->with('info', 'Комментарий удален');
 
         $this->validate($request, [
             "reply-{$commentId}" => 'required|max:1000'
@@ -88,7 +88,7 @@ class CommentController extends Controller
     {
         $comment = Comment::findOrFail($commentId);
 
-        if (!$comment) redirect()->back()->with('info', 'Комментария не существует');
+        if (!$comment) return redirect()->back()->with('info', 'Комментария не существует');
 
 
         //проверка на кто удаляет комментарий
@@ -105,7 +105,7 @@ class CommentController extends Controller
     {
         $comment = Comment::findOrFail($commentId);
 
-        if (!$comment) redirect()->back()->with('info', 'Комментария не существует');
+        if (!$comment) return redirect()->back()->with('info', 'Комментария не существует');
 
 
         //проверка на кто удаляет комментарий
