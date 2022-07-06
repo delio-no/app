@@ -13,7 +13,7 @@
     <td>
         <div class="btn-group">
             <a class="btn btn-primary" role="button"
-               href="{{ route('book.show', ['profileId' => $user->id, 'bookId' => $book->id]) }}">Читать</a>
+               href="{{ route('book.get', ['profileId' => $user->id, 'bookId' => $book->id]) }}">Читать</a>
             @if(Auth::user()->id == $profileId)
                 <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
                         data-bs-toggle="dropdown" aria-expanded="false">

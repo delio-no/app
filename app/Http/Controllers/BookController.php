@@ -11,9 +11,9 @@ use App\Models\Role;
 
 class BookController extends Controller
 {
-    public function getBook($bookId)
+    public function getBook($profileId, $bookId)
     {
-        $book = Book::find($bookId);
+        $book = Book::findOrFail($bookId);
 
         return view('books.book', compact('book'));
     }

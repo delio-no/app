@@ -58,7 +58,7 @@ Route::get('/get/more/comments/{take}', [App\Http\Controllers\CommentController:
 
 /*Библиотека*/
 //читать книгу
-Route::get('/profile/{profileId}/list/book/{bookId}', [\App\Http\Controllers\BookController::class, 'getBook'])->middleware(['auth', 'reader'])->name('book.show');
+Route::get('/profile/{profileId}/list/book/{bookId}', [\App\Http\Controllers\BookController::class, 'getBook'])->middleware(['auth', 'reader'])->name('book.get');
 
 //список книг автора
 Route::get('/profile/{profileId}/list/book', [\App\Http\Controllers\BookController::class, 'getListBookAuthor'])->middleware(['auth', 'reader'])->name('book.list');
